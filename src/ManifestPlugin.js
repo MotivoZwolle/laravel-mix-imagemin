@@ -3,6 +3,17 @@ const multimatch = require('multimatch');
 class ManifestPlugin {
     constructor(patterns = []) {
         this.patterns = patterns.map(pattern => {
+            if (pattern.to) {
+                let toPath = pattern.to;
+
+                // ensure trailing slash
+                if (toPath.substr(-1) !== '/') {
+                    toPath += '/';
+                }
+
+                return `${toPath}${pattern.from}`;
+            }
+            
             return pattern.from || pattern;
         });
     }
